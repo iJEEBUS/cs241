@@ -6,4 +6,4 @@ int main(){
   return 0;
 }
 
-int a, b, c;
+static int a=1, b=3, c=3;

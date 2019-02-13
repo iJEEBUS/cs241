@@ -1,4 +1,4 @@
-#incl <stdxx.h>
+#include <stdxx.h>
 
 int main(void)
 {
