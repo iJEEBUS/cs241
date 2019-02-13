@@ -1,10 +1,21 @@
+/*****************************************************************************
+ * A program that calculates the fourth roots of a number.
+ * 
+ * This example holds a hard-coded list of integers that are fed through
+ * the fourth root function individually.
+ *
+ * @author Ron Rounsifer
+ * @version 0.01
+ *****************************************************************************/
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 
 double calculate_fourth_root(int k);
 
-
+/*****************************************************************************
+ * Entry point of the program.
+ *****************************************************************************/
 int main()
 {
 
@@ -24,6 +35,13 @@ int main()
 }
 
 
+/*****************************************************************************
+ * Function that actually calculates the fourth root of an integer that is 
+ * passed as an argument.
+ *
+ * @returns double - the fourth root
+ * @params int - the number of which to calculate the fourth root of
+ *****************************************************************************/
 double calculate_fourth_root(int k)
 {
   double fourth_root = (double) k;

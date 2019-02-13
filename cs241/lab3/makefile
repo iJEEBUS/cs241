@@ -4,12 +4,14 @@ cipher.o: cipher.c
 
 test: test1 test2
 test1:
-	./cipher 1 FORK data.txt data.out
+	./cipher 1 SPOON data.txt data.out
 test2:
-	./cipher 2 FORK data.out data.bak
+	./cipher 2 SPOON data.out data.bak
 
-compare:
+encrypted_compare:
+	diff -s data.txt data.out
+
+decrypted_compare:
 	diff -s data.txt data.bak
-
 clean:
-	rm -rf ./cipher ./cipher.o
+	rm -rf ./cipher ./cipher.o ./data.out ./data.bak
