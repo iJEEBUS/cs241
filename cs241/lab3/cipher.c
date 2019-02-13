@@ -1,3 +1,15 @@
+/*****************************************************************************
+ * A Caesar cipher implementation in C.
+ *
+ * Can encode/decode a file with multiple keys that are inputted in
+ * the format of a string.
+ *
+ * encode example: ./cipher 1 PLASTIC data.txt data.out 
+ * decode example: ./cipher 2 PLASTIC data.out data.bak
+ *
+ * @author Ron Rounsifer
+ * @version 0.02
+ *****************************************************************************/
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,9 +17,11 @@
 
 char encrypt(char ch, int k);
 
-/**
- * A Caesar cipher implementation in C.
- */
+/*****************************************************************************
+ * Entry point of the program.
+ *
+ * @returns int - return status of the method
+ *****************************************************************************/
 int main(int argc, char* argv[])
 {  
 	int choice;
@@ -29,8 +43,7 @@ int main(int argc, char* argv[])
 	key = argv[2];
 	key_length = (int) strlen(key);
 
-	key_ints = malloc(sizeof(int) * key_length); //TODO modify this for dynamic allocation
-
+	key_ints = malloc(sizeof(int) * key_length);
 	
 	/* Maps the inputted string to their corresponding int representation 
 	 * into the key_ints array.
@@ -97,9 +110,15 @@ int main(int argc, char* argv[])
 }
 
 
-/**
- * Encrypts the given character by the list of char that are inputted.
- */
+/*****************************************************************************
+ * Encrypts the given character by shifting the character by the number of
+ * spaces defined in n % key_length, where n is the characters index in the
+ * file..
+ *
+ * @returns char - the encoded/decoded character
+ * @params char - the initial character to change
+ * @params int - offset number for encryption/decryption
+ *****************************************************************************/
 char encrypt(char ch, int k)
 {
 	char new_char;
