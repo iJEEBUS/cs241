@@ -8,7 +8,7 @@ decrypt_compare:
 	diff -s data.en data.de;
 
 project:
-	gcc -Wall -g ./p2.c -o p2
+	gcc -Wall -g ./p2.c ./functions.c -o p2
 functions:
 	gcc -Wall -g ./functions.c -o functions
 clean:
