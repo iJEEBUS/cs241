@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <ctype.h>
 /**************************************************************************************
  * Removes duplicate letters that occur in a string, leaving only the 
  * first occurrence in the word.
@@ -46,22 +46,6 @@ void remove_duplicates(char *word, int word_length)
 }
 
 /**************************************************************************************
- * Searches the first num  characters in a string for a specified target
- * character.
- *
- * @params char[] - the string to search
- * @params int - the number of letters to search
- * @params char - the target character
- *
- * @returns int - non-zero value if found, 0 if not found
- **************************************************************************************/
-int target_found(char *charArray, int num, char target)
-{
-	// TODO
-	return 0;
-}
-
-/**************************************************************************************
  * Populate the encryption array with the appropriate cipher letters according to the
  * given key.
  *
@@ -70,46 +54,31 @@ int target_found(char *charArray, int num, char target)
  **************************************************************************************/
 void init_encrypt_array(char *key, char *encrypt)
 {
-	char *msg = "Creating encryption array.";
-	printf("%s\n", msg);
+	char alphabet[] = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+	int encrypt_index = 0;
 
-	char *alphabet = malloc(sizeof(char) * 26);
-
-	// TODO Create the encryption array
-	// populate alphabet arr
-	char letter = 'Z';
-	for (int i = 65; i < 91; ++i)
+	// insert keyword into beginning of encryption array
+	for (int i = 0; i < 26; ++i)
 	{
-		alphabet[i] = letter;
-		letter--;
-
-		printf("%d\n", alphabet[i]);
-	}
-
-	for (int j = 0; j < 26; ++j)
-	{
-		if (j < strlen(key) & key[j] != '\n')
+		if ((i < strlen(key)) & (key[i] != '\n'))
 		{
-			encrypt[j] = key[j];
-		} else {
-		
-		}
+			encrypt[i] = key[i];
+			encrypt_index++;
+		} 
 	}
 
-	free(alphabet);
-}
-
-/**************************************************************************************
- * Populate the decryption array with the with the appropriate substitution letters
- * based on the encrypte array.
- *
- * @params char[] - the encryption array
- * @params char[] - the decryption array
- **************************************************************************************/
-void init_decrypt_array(char *encrypt, char *decrypt)
-{
-	char *msg = "Creating decryption array.";
-	printf("%s\n", msg);
+	// append unused letters from the backwards alphabet
+	// to the encryption array
+	for (int j = 0; j < 26; ++j) 
+	{
+		if (strchr(encrypt, alphabet[j]) == NULL)
+		{
+			if (encrypt_index < 26)
+			{
+				encrypt[encrypt_index++] = alphabet[j];	
+			}
+		} 
+	}
 }
 
 /**************************************************************************************
@@ -121,7 +90,76 @@ void init_decrypt_array(char *encrypt, char *decrypt)
  * @params FILE - output file
  * @params char - the encrypt/decrypt array 
  **************************************************************************************/
-void process_input(FILE *fin, FILE *fout, char *substitute)
+void process_input(FILE *fin, FILE *fout, char *substitute, char option)
 {
-	// TODO
+	char ch;
+	char new_char;
+	char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char l_alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+	int sub_index;
+	int lowercase = 0;
+	if (option == 'e')
+	{
+		
+		while (fscanf(fin, "%c", &ch) != EOF)
+		{
+			// encrypt the char
+			if (ch > 90)
+			{
+				lowercase = 1;
+			}
+			sub_index = toupper(ch) - 65;
+			new_char = substitute[sub_index];
+
+			// write the new char to a file
+			if ((ch == ' ') | (ch == ',') | (ch == '.') | (ch == '\n'))
+				fwrite(&ch, sizeof(ch), 1, fout);
+			else
+			{
+				if (lowercase)
+				{
+					new_char = tolower(substitute[sub_index]);
+					fwrite(&new_char, sizeof(new_char), 1, fout);
+					lowercase = 0;
+				} else {
+					fwrite(&new_char, sizeof(new_char), 1, fout);
+				}
+			}
+					
+		}
+	} else {
+
+		char *match_ptr;
+		while (fscanf(fin, "%c", &ch) != EOF)
+		{
+			// lowercase check
+			if (ch > 90)
+				lowercase = 1;
+	
+			// write the correct letter to the output
+			if ( (ch == ' ') | (ch == ',') | (ch == '.') | (ch == '\n'))
+				fwrite(&ch, sizeof(ch), 1, fout);
+			else
+			{
+				// find the index of the char in sub table 
+				match_ptr = strchr(substitute, toupper(ch));
+				
+				if (match_ptr != 0)
+				{
+					sub_index = ((long) match_ptr - (long) substitute);
+					
+					if (lowercase)
+					{
+						new_char = l_alphabet[sub_index];
+						fwrite(&new_char, sizeof(new_char), 1, fout);
+						lowercase = 0;
+					}
+					else{
+						new_char = alphabet[sub_index];
+						fwrite(&new_char, sizeof(new_char), 1, fout);
+					}
+				}
+			}
+		}
+	}
 }

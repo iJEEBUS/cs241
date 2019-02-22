@@ -25,19 +25,22 @@ int main(int argc, char **argv)
 		char *keyword = argv[2];
 		char *fin = argv[3];
 		char *fout = argv[4];
+		FILE *fin_file = fopen(fin, "r");
+		FILE *fout_file = fopen(fout, "w");
 
 		// remove duplicate letters from keyword
 		remove_duplicates(keyword, strlen(argv[2]));
-		printf("%s\n", keyword);	
 
 		// create encrypt or decryption tables
 		if (option == 'e')
 		{
 			init_encrypt_array(keyword, substitution_table);
+			process_input(fin_file, fout_file, substitution_table, option);
 		} 
 		else if (option == 'd') 
 		{
-			init_decrypt_array(keyword, substitution_table);
+			init_encrypt_array(keyword, substitution_table);
+			process_input(fin_file, fout_file, substitution_table, option);
 		}
 
 		free(substitution_table);
