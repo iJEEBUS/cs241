@@ -6,8 +6,11 @@
  * The main program that makes use of the functions defined in functions.c in 
  * order to create a simple substitution cipher in C.
  *
+ * This approach only makes use of one substitution table that can be used to
+ * either encrypt or decrypt a message.
+ *
  * @author Ron Rounsifer
- * @version 0.01
+ * @version 0.04
  ********************************************************************************/
 
 /********************************************************************************
@@ -34,12 +37,12 @@ int main(int argc, char **argv)
 		// create encrypt or decryption tables
 		if (option == 'e')
 		{
-			init_encrypt_array(keyword, substitution_table);
+			init_encryption_array(keyword, substitution_table);
 			process_input(fin_file, fout_file, substitution_table, option);
 		} 
 		else if (option == 'd') 
 		{
-			init_encrypt_array(keyword, substitution_table);
+			init_encryption_array(keyword, substitution_table);
 			process_input(fin_file, fout_file, substitution_table, option);
 		}
 

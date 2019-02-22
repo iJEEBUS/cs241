@@ -2,13 +2,23 @@
  * The implementations of the functions that are needed in order to create a simple
  * substitution cipher in C.
  *
+ * This contains three functions:
+ * 	remove_duplicates - runs through and removed duplicate letters in a word
+ * 	init_encryption_array - creates an array that can be used to encrypt / decrypt 
+ * 				a message
+ *	process_input - given a file to read from and a file to write to, this encodes
+ *			or decodes character by character before writing the new 
+ *			character to the file
+ *
  * @author Ron Rounsifer
- * @version 0.01
+ * @version 0.04
  **************************************************************************************/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+
+
 /**************************************************************************************
  * Removes duplicate letters that occur in a string, leaving only the 
  * first occurrence in the word.
@@ -52,7 +62,7 @@ void remove_duplicates(char *word, int word_length)
  * @params char[] - the given key
  * @params char[] - the encryption array
  **************************************************************************************/
-void init_encrypt_array(char *key, char *encrypt)
+void init_encryption_array(char *key, char *encrypt)
 {
 	char alphabet[] = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
 	int encrypt_index = 0;
@@ -98,7 +108,8 @@ void process_input(FILE *fin, FILE *fout, char *substitute, char option)
 	char l_alphabet[] = "abcdefghijklmnopqrstuvwxyz";
 	int sub_index;
 	int lowercase = 0;
-	if (option == 'e')
+
+	if (option == 'e') // encoding logic
 	{
 		
 		while (fscanf(fin, "%c", &ch) != EOF)
@@ -127,25 +138,31 @@ void process_input(FILE *fin, FILE *fout, char *substitute, char option)
 			}
 					
 		}
-	} else {
+	} 
+	if (option == 'd')  // decoding logic
+	{
 
 		char *match_ptr;
+
+		// as long as there is data to decode, execute this code
 		while (fscanf(fin, "%c", &ch) != EOF)
 		{
 			// lowercase check
 			if (ch > 90)
 				lowercase = 1;
 	
-			// write the correct letter to the output
+			// special character check 
 			if ( (ch == ' ') | (ch == ',') | (ch == '.') | (ch == '\n'))
 				fwrite(&ch, sizeof(ch), 1, fout);
 			else
 			{
-				// find the index of the char in sub table 
+				// get a pointer to a match (if one exists) 
 				match_ptr = strchr(substitute, toupper(ch));
 				
+				// write to file only if an actual match is found
 				if (match_ptr != 0)
 				{
+					// use pointer arithmetic to find the index of the decoded letter
 					sub_index = ((long) match_ptr - (long) substitute);
 					
 					if (lowercase)
@@ -161,5 +178,5 @@ void process_input(FILE *fin, FILE *fout, char *substitute, char option)
 				}
 			}
 		}
-	}
+	} 
 }

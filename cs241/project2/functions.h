@@ -3,7 +3,7 @@
  * in the language of C.
  *
  * @author Ron Rounsifer
- * @version 0.01
+ * @version 0.04
  ****************************************************************************************/
 #include <stdio.h>
 
@@ -11,10 +11,7 @@
 void remove_duplicates(char *word, int word_length);
 
 /* create the encrypt array with correct cipher letters given the key */
-void init_encrypt_array(char *key, char *encrypt);
-
-/* create the decrypt array with correct substitute letters based on encrypted array */
-void init_decrypt_array(char *encrypt, char *decrypt);
+void init_encryption_array(char *key, char *encrypt);
 
 /* process data from input file and write result to output file */
 void process_input(FILE *fin, FILE *fout, char *substitute, char option);
