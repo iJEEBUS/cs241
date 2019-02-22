@@ -5,4 +5,4 @@ test:
 	./p2 d "GOODMORNING" cipher rdata;
 	diff -s data rdata;
 clean:
-	rm -rf ./p2 ./functions
+	rm -rf ./p2 ./functions ./cipher ./rdata
