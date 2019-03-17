@@ -182,11 +182,7 @@ void show_inventory(struct product *l)
 {
 	if (l != NULL)
 	{
-		printf("\n");	
-		printf("-\n");
-		printf("%s / %.0f %s / $%.2f %s\n", l->name, l->quantity_value, l->quantity_unit, l->price_value, l->price_unit);
-		printf("-\n");
-		printf("\n");
+		printf("%-15s  %.0f %s  $%.2f %s\n", l->name, l->quantity_value, l->quantity_unit, l->price_value, l->price_unit);
 		show_inventory(l->next);
 	}
 }
@@ -203,9 +199,7 @@ void price_lookup(struct product *l, char name[])
 		{
 			// match found
 			printf("\n");
-			printf("-\n");
 			printf("%s / $%0.2f %s\n", l->name, l->price_value, l->price_unit);
-			printf("-\n");
 			printf("\n");
 		} else {
 			// no match, check next node
@@ -229,9 +223,7 @@ void product_lookup(struct product *l, char name[])
 		{
 			// match found
 			printf("\n");
-			printf("-\n");
 			printf("%s / %.0f %s / $%0.2f %s\n", l->name, l->quantity_value, l->quantity_unit, l->price_value, l->price_unit);
-			printf("-\n");
 			printf("\n");
 		} else {
 			// no match, check next node

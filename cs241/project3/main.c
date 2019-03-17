@@ -172,12 +172,12 @@ struct product * remove_product_helper(struct product *l)
 				break;
 			case 2: // sale
 				total_sales += sale_helper(head); 
-				printf("%f", total_sales);
 				break;
 			case 3: // price lookup
 				product_lookup_helper(head, TRUE);
 				break;
 			case 4: // display inventory
+				printf("%-15s %s %s\n", "Product", "Availibility", "Price");
 				show_inventory(head);
 				break;
 			case 5: // remove product
