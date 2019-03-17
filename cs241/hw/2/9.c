@@ -27,7 +27,12 @@ char* q9(char *s)
 	for (p = s; p < q; q--, p++)
 	{
 		tmp = *p;
-		*p = *q;
+		
+		printf("p: %c\n", *p);
+		printf("temp: %c\n", tmp);
+		printf("q: %c\n", *q);
+
+		//		*p = *q;
 		*q = tmp;
 	}
 
