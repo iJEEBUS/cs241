@@ -43,8 +43,7 @@ void add_product_helper(struct product *l)
 	char price_unit[N];
 
 	puts("\n");
-	puts("Product information");
-	puts("===================");
+	puts("Product information\n\n");
 	
 	puts("Name: ");
 	fflush(stdin);
@@ -81,14 +80,11 @@ void add_product_helper(struct product *l)
  * After getting the name, this will call the price_lookup function found in 
  * operations.c file.
  *******************************************************************************/
-void product_lookup_helper(struct product *l, int for_price, int for_info, int for_removal)
+void product_lookup_helper(struct product *l, int for_price) 
 {
 	// get the name of the product
 	char product_name[N];
 	puts("\n");
-	puts("Price Lookup");
-	puts("===================");
-	
 	puts("Name: ");
 	fflush(stdin);
 	scanf("%s", product_name);
@@ -96,10 +92,8 @@ void product_lookup_helper(struct product *l, int for_price, int for_info, int f
 	// route to correct method call in operations.c 
 	if (for_price)
 		price_lookup(l, product_name);
-	else if (for_info)
+	else	
 		product_lookup(l, product_name);
-	else if (for_removal)
-		remove_product(l, product_name);
 }
 /*******************************************************************************
  * Prompts the user for the name of the product as well as the quantity of said
@@ -116,8 +110,7 @@ float sale_helper(struct product *l)
 	float profit = 0.0;
 
 	puts("\n");
-	puts("Sale");
-	puts("===================");
+	puts("Sale\n\n");
 
 	puts("Name: ");
 	fflush(stdin);
@@ -129,6 +122,23 @@ float sale_helper(struct product *l)
 	sale(l, product_name, quantity, &profit);
 
 	return profit;
+}
+
+/**
+ * Returns the pointer to the new inventory list after removing the item
+ * specified by the user.
+ *
+ * @returns new pointer to inventory list
+ **/
+struct product * remove_product_helper(struct product *l)
+{
+	// get the name of the product
+	char product_name[N];
+	puts("\n");
+	puts("Name: ");
+	fflush(stdin);
+	scanf("%s", product_name);
+	return remove_product(l, product_name);
 }
 
 /*******************************************************************************
@@ -165,20 +175,20 @@ float sale_helper(struct product *l)
 				printf("%f", total_sales);
 				break;
 			case 3: // price lookup
-				product_lookup_helper(head, TRUE, FALSE, FALSE);
+				product_lookup_helper(head, TRUE);
 				break;
 			case 4: // display inventory
 				show_inventory(head);
 				break;
 			case 5: // remove product
-				product_lookup_helper(head, FALSE, FALSE, TRUE);
+				head = remove_product_helper(head);
 				break;
 			case 6: // product search
-				product_lookup_helper(head, FALSE, TRUE, FALSE);
+				product_lookup_helper(head, FALSE);
 				break;
 			case 7: // status report
 				printf("\n");
-				printf("Total revenue today: %0.2f\n", total_sales);
+				printf("Total revenue today: $%0.2f\n", total_sales);
 				show_inventory(head);
 				break;
 			case 8: // done for the day

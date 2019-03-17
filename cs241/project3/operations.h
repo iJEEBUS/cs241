@@ -41,7 +41,8 @@ void price_lookup(struct product *l, char name[]);
 void product_lookup(struct product *l, char name[]);
 
 // remove a product from stock
-void remove_product(struct product *l, char name[]);
+struct product * remove_product(struct product *l, char name[]);
 
 // sell a product and return the total money made from the deal
 void sale(struct product *l, char name[], int qty, float *profit);
+

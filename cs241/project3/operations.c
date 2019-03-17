@@ -247,23 +247,54 @@ void product_lookup(struct product *l, char name[])
  * Given a list and  a product name, search through the list
  * and remove the product from it.
  *******************************************************************************/
-void remove_product(struct product *l, char name[])
+struct product * remove_product(struct product *l, char name[])
 {
-	if (l != NULL)
-	{
-		if (strcmp(l->next->name, name) == 0)
-		{
-			// match found
-			l->next = l->next->next;
+	struct product *temp = l;
 
-		} else {
-			// no match, check next node
-			remove_product(l->next, name);
-		}
-	} else {
+	// case 0: list is empty	
+	if (l == NULL)
+	{
 		// no match found in inventory
 		printf("Sorry, no item called '%s' found in the inventory.", name);
 	}
+
+	// case 1: only 1 item in list
+	else if (l->next == NULL)
+	{
+		// remove the only item if match
+		if (strcmp(l->name, name) == 0)
+		{
+			temp = NULL;
+		} else {
+			// no match found in inventory
+			printf("Sorry, no item called '%s' found in the inventory.", name);
+		}
+
+	} 
+	else // case 2: list is populated
+	{
+		// check the first node
+		if (strcmp(l->name, name) == 0)
+		{
+			temp = l->next;
+			printf("%s removed from inventory.\n",  name);
+		} else {
+			while (l->next)
+			{
+				if (strcmp(l->next->name, name) == 0)
+				{
+					// match
+					l->next = l->next->next;
+					printf("%s removed from inventory.",  name);
+					break;
+				} else {
+					// no match, check next node
+					l = l->next;
+				}	
+			}
+		}
+	}
+	return temp;
 }
 
 /*******************************************************************************
@@ -274,8 +305,10 @@ void remove_product(struct product *l, char name[])
  * The profit generated from each sale is written to the profit pointer that is
  * passed as an argument.
  *******************************************************************************/
-void sale(struct product *l, char name[], int qty, float *profit)
+void sale(struct product *head, char name[], int qty, float *profit)
 {
+
+	struct product *l = head;
 	if (l != NULL)
 	{
 		if (strcmp(l->name, name) == 0)
@@ -286,12 +319,12 @@ void sale(struct product *l, char name[], int qty, float *profit)
 				// have enough in stock
 				*profit = (l->price_value * qty);
 				l->quantity_value -= qty;
-				printf("%f\n", *profit);
 
 			} else {
 				// do not have enough in stock
 				*profit = (l->price_value * l->quantity_value);
-				remove_product(l, name);
+				l->quantity_value = 0;
+				remove_product(head, name);
 			}
 		} else {
 			// no match, check next node
