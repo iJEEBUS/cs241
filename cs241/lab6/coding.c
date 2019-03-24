@@ -73,11 +73,9 @@ int encode(FILE * infile, FILE * outfile)
  */
 int decode(FILE * infile, FILE * outfile)
 {
-
 	// check if files exist
 	if (infile == NULL || outfile == NULL)
 		return 1;
-
 
 	int char_per_ul = sizeof(unsigned long int) / sizeof(char);	
 	unsigned long int ul_holder = 0;
@@ -90,7 +88,6 @@ int decode(FILE * infile, FILE * outfile)
 	while (fscanf(infile, "%ld, ", &ul_holder) != EOF)
 	{
 		ch_holder |= ul_holder;
-		
 
 		// add letters to the buffer in the correct order
 		while (n < (char_per_ul - 1))
@@ -103,17 +100,22 @@ int decode(FILE * infile, FILE * outfile)
 
 		}
 		
+		// write the chars to the file if the number of words per
+		// number is reached
 		if ((++n) >= char_per_ul)
 		{
 
+			// add last char to the buffer
 			buffer[reverse_count] = ch_holder;
 			
 			// write the buffer to the file
 			n = 0;
 			while (n < 8)
 			{
+				// break if the null char is ran into
+				if (buffer[n] == 0)
+					break;
 				fprintf(outfile, "%c", buffer[n]);
-				printf("%c", buffer[n]);
 				n++;
 			}
 
@@ -124,6 +126,5 @@ int decode(FILE * infile, FILE * outfile)
 			ch_holder = ul_holder;
 		}	
 	}
-
 	return 0;
 }
