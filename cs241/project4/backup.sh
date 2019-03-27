@@ -71,7 +71,7 @@ function help_user {
 # For each file passed, it attempts to copy the file to the backup folder.
 function backup_files {
 
-	help_menu='0';
+	help_menu='0';	
 	for file in $args;
 	do
 		if [ -e ./$file ]
@@ -95,7 +95,10 @@ function backup_files {
 				fi
 			else	
 				cp -r ./$file ~/.backup;
+			
 			fi	
+		else
+			echo "$file does not exist!";
 		fi
 	done
 	
@@ -131,4 +134,6 @@ if [ "$#" -gt 0 ]
 then
 	args="$@";
 	backup_files;
+else
+	echo "The usage of this command is: backup [options] source-files";
 fi
